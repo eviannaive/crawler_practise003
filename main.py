@@ -18,11 +18,18 @@ if response.status_code == requests.codes.ok:
     # print(soup.prettify())
     tr_with_id = soup.find_all("tr",id=True)
 
+    # for d in tr_with_id:
+    #     tds = d.find_all("td")
+    #     tds_text = list(map(lambda td : td.text, tds))
+    #     data_list.append(tds_text)
+    #     print(f"寫入{tds_text}...")
+
     for d in tr_with_id:
         tds = d.find_all("td")
-        tds_text = list(map(lambda td : td.text, tds))
-        data_list.append(tds_text)
-        print(f"寫入{tds_text}...")
+        date, value, price = [cell.text for cell in tds]
+        data_list.append([date,value,price])
+        print(f"寫入{date},{value},{price}...")
+
 
     print("export excel...")
     empty_file = pd.DataFrame(data_list,columns=["日期", "買賣超金額", "台指期"])
